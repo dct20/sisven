@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Support\Facades\DB;
 class CategoryController extends Controller
 {
     /**
@@ -20,7 +21,10 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        $categories = DB::table('categories')
+        ->select('name', 'description')
+        ->get();
+        return view('categories.new', ['categories' => $categories]);
     }
 
     /**
@@ -28,7 +32,11 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $categories = new Category();
+        $categories->name = $request->input('name');
+        $categories->description = $request->input('description');
+        $categories->save();
+        return redirect()->route('categories.index');
     }
 
     /**
