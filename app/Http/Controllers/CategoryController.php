@@ -52,7 +52,8 @@ class CategoryController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $categories = Category::findorFail($id);
+        return view('categories.edit', compact('categories'));
     }
 
     /**
@@ -60,7 +61,11 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $categories = Category::findorFail($id);
+        $categories->name = $request->input('name');
+        $categories->description = $request->input('description');
+        $categories->save();
+        return redirect()->route('categories.index');
     }
 
     /**
